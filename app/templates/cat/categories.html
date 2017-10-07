@@ -13,13 +13,15 @@
                 <tr>
                     <th>Category</th>
                     <th>Keywords</th>
+                    <th>Edit</th>
                 </tr>
             </thead>
             <tbody>
                 {% for category in categories %}
                 <tr>
                     <td> {{category.name}} </td>
-                    <td> {% for x in category.keywords.all() %} {{ x.word }} {% endfor %}</td>
+                    <td> {% for x in category.keywords.all() if x.enabled %} {{ x.word }} {% endfor %}</td>
+                    <td><a href="{{ url_for('cat.edit_category', cat_id=category.id) }}" class="fa fa-pencil"></a></td>
                 </tr>
                 {% endfor %}
             </tbody>

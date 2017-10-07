@@ -2,5 +2,15 @@
 {% import "macros.html" as mac %}
 
 {% block content %}
-{{ mac.quick_form(form) }}
+<div class="col-6 mx-auto">
+<div class="card bg-light">
+
+    <div class="card-header">
+        <h4 class="card-title">{{title}}</h4>
+    </div>
+    <div class="card-body"> 
+        {{ mac.quick_form(form) }}
+    </div>
+</div>
+</div>
 {% endblock %}

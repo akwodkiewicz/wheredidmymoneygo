@@ -119,6 +119,7 @@ class Keyword(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     word = db.Column(db.String(50), unique=False, index=True)
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
+    enabled = db.Column(db.Boolean)
 
     # Constraint for word+category uniqueness
     constraint = db.UniqueConstraint()
