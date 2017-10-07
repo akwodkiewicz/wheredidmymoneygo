@@ -50,11 +50,11 @@ def add_category():
     return render_template('cat/category.html', form=form, title='Add Category')   
 
 
-@cat.route('/edit/<int:cat_id>', methods=['GET', 'POST'])
+@cat.route('/edit/<int:cid>', methods=['GET', 'POST'])
 @login_required
-def edit_category(cat_id):
+def edit_category(cid):
     
-    category = Category.query.get_or_404(cat_id)
+    category = Category.query.get_or_404(cid)
 
     if check_ownership(category):
         form = CategoryForm()
@@ -96,5 +96,20 @@ def edit_category(cat_id):
         form.keywords.data = " ".join(str(i) for i in existing_keywords)
         return render_template('cat/category.html', edit=True, form=form, title='Edit Category') 
 
+    else:
+        abort(403)
+
+
+
+@cat.route('/delete/<int:cid>', methods=['POST'])
+@login_required
+def delete_category(cid):
+    category = Category.query.get_or_404(cid)
+    
+    if check_ownership(category):
+        db.session.delete(category)
+        db.session.commit()
+        flash('Category deleted!', 'dark')
+        return redirect(url_for('.categories'), 301)
     else:
         abort(403)

@@ -21,7 +21,12 @@
                 <tr>
                     <td> {{category.name}} </td>
                     <td> {% for x in category.keywords.all() if x.enabled %} {{ x.word }} {% endfor %}</td>
-                    <td><a href="{{ url_for('cat.edit_category', cat_id=category.id) }}" class="fa fa-pencil"></a></td>
+                    <td><a href="{{ url_for('cat.edit_category', cid=category.id) }}" class="btn btn-light"><i class="fa fa-pencil"></i></a></td>
+                                        <td>
+                        <form method="post" action="{{ url_for('cat.delete_category', cid=category.id) }}"">
+                            <button type="submit" class="btn btn-light"><i class=" fa fa-trash"></i></button>
+                        </form>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>

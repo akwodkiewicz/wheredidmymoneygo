@@ -14,6 +14,8 @@
                     <th>Transaction</th>
                     <th>Amount</th>
                     <th>Category</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
                 </tr>
             </thead>
             <tbody>
@@ -26,6 +28,12 @@
                     <td style="color:green"> {{ transaction.amount }} </td>
                     {% endif %}
                     <td> {{ transaction.category.name }} </td>
+                    <td><a href="{{ url_for('tran.edit_transaction', tid=transaction.id) }}" class="btn btn-light"><i class="fa fa-pencil"></i></a></td>
+                    <td>
+                        <form method="post" action="{{ url_for('tran.delete_transaction', tid=transaction.id) }}"">
+                            <button type="submit" class="btn btn-light"><i class=" fa fa-trash"></i></button>
+                        </form>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
