@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% import "macros.html" as mac %}
+{% set active_page = "transactions" %}
+
+{% block content %}
+<div class="col-6 mx-auto">
+<div class="card bg-light">
+
+    <div class="card-header">
+        <h4 class="card-title">Add transaction</h4>
+    </div>
+    <div class="card-body"> 
+        {{ mac.quick_form(form) }}
+    </div>
+</div>
+</div>
+{% endblock %}

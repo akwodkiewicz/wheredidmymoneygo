@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% set active_page = "transactions" %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-3">
+        <a class="btn btn-dark" href="{{ url_for('tran.add_transaction') }}" role="button"><i class="fa fa-plus"></i>   Add transaction</a>
+    </div>
+    <div class="col-9">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Transaction</th>
+                    <th>Amount</th>
+                    <th>Category</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaction in transactions %}
+                <tr>
+                    <td> {{ transaction.description }} </td>
+                    {% if transaction.amount < 0 %}
+                    <td style="color:red"> {{ transaction.amount*(-1) }} </td>
+                    {% else %}
+                    <td style="color:green"> {{ transaction.amount }} </td>
+                    {% endif %}
+                    <td> {{ transaction.category.name }} </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% set active_page = "categories" %}
+
+
+{% block content %}
+<div class="row">
+    <div class="col-3">
+        <a class="btn btn-dark" href="{{ url_for('cat.add_category') }}" role="button"><i class="fa fa-plus"></i>   Add category</a>
+    </div>
+    <div class="col-9">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Keywords</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for category in categories %}
+                <tr>
+                    <td> {{category.name}} </td>
+                    <td> {% for x in category.keywords.all() %} {{ x.word }} {% endfor %}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

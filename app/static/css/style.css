@@ -2,10 +2,10 @@ body {
     background-color: #DDDDDD;
 }
 
-.alerts {
-    min-height: 4.125em;
+.wrapper {
+  padding-top: 3em;
 }
 
-.wrapper {
-  padding-top: 10em;
+#contentcontainer {
+    padding-top: 5.5em;
 }

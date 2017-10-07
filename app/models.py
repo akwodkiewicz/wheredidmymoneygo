@@ -19,6 +19,7 @@ class User(UserMixin, db.Model):
 
     # 'One to many' bidirectional relationship
     accounts = db.relationship('Account', backref='user', lazy='dynamic')
+    categories = db.relationship('Category', backref='user', lazy='dynamic')
 
     @property
     def password(self):
@@ -74,7 +75,7 @@ class Transaction(db.Model):
     __tablename__ = 'transactions'
 
     id = db.Column(db.Integer, primary_key=True)
-    amount = db.Column(db.Numeric)
+    amount = db.Column(db.Numeric(precision=10, scale=2))
     description = db.Column(db.Text)
     date = db.Column(db.Date)
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
@@ -84,7 +85,7 @@ class Transaction(db.Model):
     category = db.relationship('Category')
 
     def __repr__(self):
-        return '<Transaction: [{}] ${}, cat: {}, {}>'.format(id, amount, 
+        return '<Transaction: [{}] ${}, cat: {}, {}>'.format(id, self.amount, 
             self.category.name, self.account.id)
 
 
@@ -93,15 +94,18 @@ class Category(db.Model):
     Create a categories table
     """
     __tablename__ = 'categories'
+    __table_args__ = (db.UniqueConstraint('name', 'user_id', 
+                                            name='_category_for_user_uc'), )
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(60), unique=True, index=True)
+    name = db.Column(db.String(60), unique=False, index=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     # 'One to many', bidirectional
     keywords = db.relationship('Keyword', backref='category', lazy='dynamic')
 
     def __repr__(self):
-        return '<Category: {}>'.format(name)
+        return '<Category: {}>'.format(self.name)
 
 
 class Keyword(db.Model):
@@ -109,10 +113,15 @@ class Keyword(db.Model):
     Create a keywords table
     """
     __tablename__ = 'keywords'
+    __table_args__ = (db.UniqueConstraint('word', 'category_id', 
+                                            name='_word_in_category_uc'), )
 
     id = db.Column(db.Integer, primary_key=True)
-    word = db.Column(db.String(50), unique=True, index=True)
+    word = db.Column(db.String(50), unique=False, index=True)
     category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))
+
+    # Constraint for word+category uniqueness
+    constraint = db.UniqueConstraint()
 
     def __repr__(self):
         return '<Keyword: {} (cat: {})>'.format(self.word, self.category.name)
